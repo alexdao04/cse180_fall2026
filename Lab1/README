@@ -1,0 +1,14 @@
+# Name: Alexander Dao
+# Date: Oct 1, 2026
+# Class: CSE 180, Nikos Tziavelis
+Not much to say here. Lab1 was pretty straightforward. - Alex <br>
+
+**Things to Note**
+Minimal AI was used to create the lab script. <br>
+Gemini was only used to verify that I was following the steps of the lab correctly, <br>
+in particular creating the tables and ensuring everything from create_lab1 to load_lab1 were loaded correctly. <br>
+The hardest part to be honest was figuring out references and primary keys, <br>
+but I got through that pretty quickly with some Googling. The way I understand references, <br>
+it's like calling an external function or value from another separate one in a programming language. <br>
+As for primary keys, they're the main identifier PSQL uses to find specific target users. <br>
+I'm pretty excited to do more in this class and am looking forward to future lectures for sure. <br>
