@@ -1,3 +1,3 @@
-SELECT
-FROM
-WHERE
+SELECT DISTINCT *
+FROM Astronaut
+WHERE astronautName != 'Sophia Kim'
