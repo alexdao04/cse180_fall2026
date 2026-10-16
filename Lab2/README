@@ -1,0 +1,15 @@
+# Name: Alexander Dao
+# Date: Oct 16, 2026
+# Class: CSE 180, Nikos Tziavelis
+
+** Things to Note **
+Again, minimal AI was used for this Lab and writing its associated queries.
+Gemini was only used for debugging purposes e.g. SELECT or JOIN errors caused by bad query syntax or unintended behavior.
+This was a pretty good assignment for understanding how primary keys and foreign keys interact with each other,
+particularly within the constraints of the assignment sheet (e.g. pulling payloads with a certain name or numeric value).
+I also got to learn how to make more detailed queries from this assignment. Class teaches us the basics like "SELECT FROM WHERE"
+but not how to make detailed queries in practice, which is where this homework comes into play. I also learned how subqueries work
+and that they don't inherit the FROM properties of the query they're nested under. Plenty learned today, plenty to learn tomorrow.
+Looking forward to doing more in this class!
+
+- Alex
