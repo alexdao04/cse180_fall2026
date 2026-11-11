@@ -13,6 +13,9 @@ FROM RideshareMissionView;
 
 DELETE FROM Contract WHERE contractID = 209;
 
+SELECT missionID, rocketType, totalContracts, totalRevenue / totalContracts AS avgRevenuePerContract
+FROM RideshareMissionView;
+
 /* RESULTS OF QUERY 2:
  missionid | rockettype | totalcontracts | avgrevenuepercontract 
 -----------+------------+----------------+-----------------------

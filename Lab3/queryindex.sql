@@ -42,6 +42,14 @@ Execution Time 10.424ms
 CREATE INDEX ContractIndex
 ON Contract(priority, price);
 
+SELECT m.missionID, m.rocketType, COUNT(c.contractID) AS numPremium, AVG(c.price) AS avgPremiumPrice
+FROM Mission m, Contract c
+WHERE m.missionID = c.missionID
+    AND c.price >= 90000
+    AND c.priority = 'H'
+GROUP BY m.missionID, m.rocketType
+ORDER BY m.missionID;
+
 /*
  missionid | rockettype | numpremium |  avgpremiumprice
 -----------+------------+------------+--------------------
