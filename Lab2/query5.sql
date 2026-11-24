@@ -1,4 +1,4 @@
-SELECT DISTINCT MissionCrew.missionID as theMissionID, missionCrew.astronautID as theAstronautID
+SELECT MissionCrew.missionID as theMissionID, missionCrew.astronautID as theAstronautID
 FROM Mission, Astronaut, Contract, PayloadIntegration, MissionCrew
 WHERE Mission.missionID = MissionCrew.missionID
 AND Astronaut.astronautID = MissionCrew.astronautID

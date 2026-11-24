@@ -1,4 +1,4 @@
-SELECT DISTINCT Mission.missionID as theMissionID, rocketType as theRocketType
+SELECT Mission.missionID as theMissionID, rocketType as theRocketType
 FROM Mission, Contract
 WHERE Mission.missionID = Contract.missionID 
 AND paymentMethod = 'GovernmentGrant'
