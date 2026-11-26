@@ -51,11 +51,10 @@ def countAstronautsLaunchedFromSite (myConn, theSiteCode):
             return -1
 
         cur.close()
-        if row:
-            return row[0]
-        else:
-            return 0
-# end countAstronautsLaunchedFromSite
+        return 0
+    cur.close()
+    return row[0]
+    # end countAstronautsLaunchedFromSite
 
 
 # refundScrubbedContracts (myConn, scrubDate):
@@ -90,7 +89,7 @@ def refundScrubbedContracts (myConn, scrubDate):
         ELSE c.paymentMethod || ' REFUNDED ' || %s
     END
     FROM Mission m
-    WHERE DATE(m.scheduledLaunch) = %s
+    WHERE DATE(m.scheduledLaunch) = TO_DATE(%s, 'YYYY-MM-DD')
         AND c.missionID = m.missionID
         AND (c.paymentMethod IS NULL OR c.paymentMethod NOT LIKE '%%REFUNDED%%')
     """
@@ -175,15 +174,36 @@ def main():
     # Perform tests of countAstronautsLaunchedFromSite, as described in Section 7 of Lab4.
     # Print their outputs (including error outputs) here, not in countAstronautsLaunchedFromSite.
     # You may use a Python method to help you do the printing.
+    for site in ["KSC", "BOCA", "WSLS", "LAX", "VSFB"]:
+        output = countAstronautsLaunchedFromSite(myConn, site)
+        if output >= 0:
+            print(f'Number of astronauts launched from site {site} is {output}')
+        else:
+            print(f'Error: invalid launch site {site}')
+        print()
 
     # Perform tests of refundScrubbedContracts, as described in Section 7 of Lab4.
     # Print their outputs (including error outputs) here, not in refundScrubbedContracts.
     # You may use a Python method to help you do the printing.
+    restricted = ["2026-03-01", "2025-09-15", "2026-02-14", "2026-03-01", "2026-06-25"]
+    for dates in restricted:
+        output = refundScrubbedContracts(myConn, scrubDate)
+        if output >= 0:
+            print(f"Number of contracts refunded by refundScrubbedContracts for {scrub_date} is {output}")
+        else:
+            print(f"Error: invalid scrubDate {scrubDate}")
+        print()
 
     # Perform tests of rewardCrew, as described in Section 7 of Lab4,
     # Print their outputs (including error outputs) here, not in rewardCrew.
     # You may use a Python method to help you do the printing.
-
+    for min_missions, max_reward in [(0,3), (3,1), (2,2), (3,5), (1,10)]:
+        output = rewardCrew(myConn, minSuccessfulMissions, maxReward)
+        if result >= 0:
+            print(f"Number of astronauts rewarded for minSuccessfulMissions {minSuccessfulMissions} and maxRewarded {maxRewarded} is {count}")  
+        else:
+            print(f"Error: invalid {minSuccessfulMissions}, {maxRewarded}")
+        print()
     myConn.close()
     sys.exit(0)
 #end
