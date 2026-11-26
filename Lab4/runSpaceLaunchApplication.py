@@ -30,30 +30,31 @@ import psycopg2, sys
 # For more details, including error handling and return codes, see the Lab4 pdf.
 
 def countAstronautsLaunchedFromSite (myConn, theSiteCode):
-    # You need to implement this function
     cur = myConn.cursor()
 
-    """The launch company needs to know how many different astronauts have launched from a given launch site.
-    
-    The MissionCrew table tells us which astronauts (astronautID) were crew on which missions
-    (missionID), while the Mission table tells us the launch site (launchSiteCode) that each mission
-    launches from. A mission has launched only if its actualLaunch is not NULL.
-    
-    Besides the database connection, countAstronautsLaunchedFromSite has one parameter,
-    theSiteCode, which is a string. countAstronautsLaunchedFromSite should count the number of
-    different astronauts who were crew on a mission that launched from the launch site whose
-    siteCode is theSiteCode. The function should return that count.
-
-    If there is no launch site whose siteCode equals theSiteCode, countAstronautsLaunchedFromSite should return -1. 
-
-    If the launch site exists but no astronauts have launched from it, countAstronautsLaunchedFromSite should return 0.
-
-    Note that Python functions can have more than one SQL statement in them.
-
-    You will probably have more than one SQL statement in your code for countAstronautsLaunchedFromSite.
+    sql = """
+    SELECT COUNT(DISTINCT mc.astronautID)
+    FROM Mission m
+    JOIN MissionCrew mc ON m.missionID = mc.missionID
+    WHERE m.launchSiteCode = %s
+        AND m.actualLaunch IS NOT NULL
     """
 
-    return 0
+    cur.execute(sql, (theSiteCode,))
+    row = cur.fetchone()
+        
+    if row is None or row[0] == 0: 
+        # null check (if no launch site whose siteCode = theSiteCode)
+        cur.execute("SELECT 1 FROM LaunchSite WHERE siteCode = %s", (theSiteCode,))
+        if cur.fetchone() is None:
+            cur.close()
+            return -1
+
+        cur.close()
+        if row:
+            return row[0]
+        else:
+            return 0
 # end countAstronautsLaunchedFromSite
 
 
@@ -75,50 +76,30 @@ def countAstronautsLaunchedFromSite (myConn, theSiteCode):
 
 def refundScrubbedContracts (myConn, scrubDate):
     # You need to implement this function
+    
+    if scrubDate is None or not scrubDate.startswith("2026-"): # simple 2026 check
+        return -1
+    
+
+    cur = myConn.cursor()
+    
+    sql = """
+    UPDATE Contract c 
+    SET paymentMethod = CASE
+        WHEN c.paymentMethod IS NULL THEN 'REFUNDED ' || %s
+        ELSE c.paymentMethod || ' REFUNDED ' || %s
+    END
+    FROM Mission m
+    WHERE DATE(m.scheduledLaunch) = %s
+        AND c.missionID = m.missionID
+        AND (c.paymentMethod IS NULL OR c.paymentMethod NOT LIKE '%%REFUNDED%%')
     """
-    ● A launch is “scrubbed” when it is called off on the day it was scheduled (for example, because of
-    weather). After a launch range outage, the launch company has decided to refund every
-    contract for a mission that was scheduled to launch on a particular day, even if that mission
-    still launched later that day or on another day.
 
-    ● In the Contract table, the value of paymentMethod is the method that was used to pay for the
-    contract. In the Lab4 load data, these values are 'WireTransfer', 'GovernmentGrant',
-    'CreditLine' and NULL.
-
-    ● Besides the database connection, refundScrubbedContracts has the parameter scrubDate,
-    which is a string formatted as YEAR-MONTH-DAY (ex. '2026-03-01'). The function
-    refundScrubbedContracts should do the following:
-        ○ If the year in scrubDate is not 2026, then no changes should be made to any
-        paymentMethod values, and refundScrubbedContracts should return -1.
-        ○ Otherwise, for every mission whose scheduledLaunch is on the date scrubDate, the
-        paymentMethod of each Contract for that mission should have ' REFUNDED <scrubDate>'
-        appended at the end. For example, if scrubDate is '2026-05-08', then a Contract for that
-        mission whose paymentMethod is 'WireTransfer' should be changed to 'WireTransfer
-        REFUNDED 2026-05-08'.
-        ○ If the paymentMethod of that Contract is NULL, it should be changed to 'REFUNDED 2026-
-        05-08' (without a blank at the beginning). Remember that in SQL, NULL || 'abc' is NULL.
-        ○ Contracts that have already been refunded (their paymentMethod has 'REFUNDED' in it)
-        should not be changed again. A Contract whose paymentMethod is NULL has not been
-        refunded.
-        ○ refundScrubbedContracts should return the number of Contracts whose paymentMethod
-        was updated.
-
-    ● To concatenate two strings in SQL, use the || operator (the vertical bar written twice). For
-    example: 
-    'Dr. ' || astronautName
-    puts 'Dr. ' in front of an astronautName.
-
-    ● Notes:
-        ○ To get a SQL DATE datatype from a TIMESTAMP you can use the DATE(timestamp)
-        function, ex. DATE(m.scheduledLaunch).
-        ○ To get a SQL DATE datatype from a string you can use the TO_DATE(string,
-        string_date_format) function, ex. TO_DATE(date_as_string, 'YYYY-MM-DD').
-        ○ After you execute an UPDATE, myCursor.rowcount is the number of rows that were
-        updated.
-        ○ If you use LIKE in a SQL string that also has %s parameters, write each % in the pattern as
-        %%."""
-    return 0
-
+    cur.execute(sql, (scrubDate, scrubDate, scrubDate))
+    # for security reasons (pass separate so a bad actor cant modify the og query)
+    updated_rows = cur.rowcount
+    cur.close()
+    return updated_rows
 # end refundScrubbedContracts
 
 
