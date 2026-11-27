@@ -1,0 +1,13 @@
+# Name: Alexander Dao
+# Date: November 26, 2026
+# Class: CSE 180 (Database Systems I)
+# Professor: Nikos Tziavelis
+
+** Things to note **
+Minimal AI used in this lab. Primarily Gemini for help with SQL syntax questions as well as the structuring of stored functions.
+All of the work shown was done by me and I used AI to help guide my thinking process, like previous assignments. 
+One point of struggle for me was psycopg's syntax, but after some time working with it in this lab I feel more comfortable, it's kind of like software-based network controller libraries where you work in terms of states and the order of your conditions/constraints can affect end behavior.
+It was a pleasure to take this class!
+
+- Alex
+ 
