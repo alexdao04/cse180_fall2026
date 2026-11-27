@@ -186,10 +186,10 @@ def main():
     # Print their outputs (including error outputs) here, not in refundScrubbedContracts.
     # You may use a Python method to help you do the printing.
     restricted = ["2026-03-01", "2025-09-15", "2026-02-14", "2026-03-01", "2026-06-25"]
-    for dates in restricted:
+    for scrubDate in restricted:
         output = refundScrubbedContracts(myConn, scrubDate)
         if output >= 0:
-            print(f"Number of contracts refunded by refundScrubbedContracts for {scrub_date} is {output}")
+            print(f"Number of contracts refunded by refundScrubbedContracts for {scrubDate} is {output}")
         else:
             print(f"Error: invalid scrubDate {scrubDate}")
         print()
@@ -197,10 +197,10 @@ def main():
     # Perform tests of rewardCrew, as described in Section 7 of Lab4,
     # Print their outputs (including error outputs) here, not in rewardCrew.
     # You may use a Python method to help you do the printing.
-    for min_missions, max_reward in [(0,3), (3,1), (2,2), (3,5), (1,10)]:
-        output = rewardCrew(myConn, minSuccessfulMissions, maxReward)
-        if result >= 0:
-            print(f"Number of astronauts rewarded for minSuccessfulMissions {minSuccessfulMissions} and maxRewarded {maxRewarded} is {count}")  
+    for minSuccessfulMissions, maxRewarded in [(0,3), (3,1), (2,2), (3,5), (1,10)]:
+        output = rewardCrew(myConn, minSuccessfulMissions, maxRewarded)
+        if output >= 0:
+            print(f"Number of astronauts rewarded for minSuccessfulMissions {minSuccessfulMissions} and maxRewarded {maxRewarded} is {output}")  
         else:
             print(f"Error: invalid {minSuccessfulMissions}, {maxRewarded}")
         print()

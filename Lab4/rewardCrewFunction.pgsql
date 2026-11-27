@@ -16,7 +16,7 @@ BEGIN
 		JOIN Mission m on mc.missionID = m.missionID
 		WHERE m.outcome = 'S'
 		GROUP BY a.astronautID, a.yearsExperience
-		HAVING COUNT(*) >= minSuccessfulissions
+		HAVING COUNT(*) >= minSuccessfulMissions
 			AND NOT EXISTS(
 				SELECT 1
 				FROM MissionCrew mc2
@@ -27,7 +27,7 @@ BEGIN
 				LIMIT MaxRewarded
 			LOOP
 				UPDATE MissionCrew
-			SET compensation = compenstaion * 1.1
+			SET compensation = compensation * 1.1
 			WHERE astronautID = rec.astronautID;
 		rewardedCount := rewardedCount + 1;
    	END LOOP;
